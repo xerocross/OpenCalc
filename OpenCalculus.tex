@@ -641,6 +641,144 @@ An alternative proof of the Extreme Value Theorem might rely on the statement th
 
 
 
+\section{Topology for Calculus: Compactness}
+
+In this section, we want to introduce the notion of \emph{compactness}.  It's fairly deep compared to the usual fare in calculus, but it's an essential idea to understand a proof of the extreme value theorem.
+
+Calculus textbooks this author has seen do not bother to prove the extreme value theorem because it's surprisingly deep.  It's easy to state the theorem, and students usually readily believe it, but the proof does not really lie within the scope of calculus.
+
+Most of the proofs we do in a calculus class are just simple manipulations of the $\epsilon$-$\delta$ sort.  To prove the extreme value theorem calls for tools of a more sophisticated nature.  The most natural approach is to use \hilight{compactness}.  So, if you want to understand the ideas at a deeper level, we offer you this visual introduction to the notion of compactness.  
+
+\begin{definition}
+An \emph{open cover} of a set $X$ is a family ${O_i}$ of open sets so that $X \subset \bigcup O_i$.
+\end{definition}
+
+
+
+In the following image is the set $X$, a closed rectangle.
+
+\begin{center}
+\begin{tikzpicture}
+\filldraw[blue!40!white, draw=black] (0,0) rectangle (5,5);
+\end{tikzpicture}
+\end{center}
+
+We cover it with open circles.  A mathematician would usually say ``open balls''.  We like to say ``circle'' or ``sphere'' for the boundary and ``ball'' for the points contained inside it.
+``Cover'' means just what you think: every point of $X$ is contained in one of the open balls.
+
+Here is a visual example of an open cover of $X$.  Obviously, it's easy to cover $X$ with just a finite number of open balls.  They don't have to be disjoint or anything.  They can overlap.  That's fine.
+
+
+\begin{center}
+\begin{tikzpicture}
+
+\filldraw[blue!40!white, draw=black] (0,0) rectangle (5,5);
+
+
+
+\fill[green,fill opacity=0.7] (1,4) circle(.5cm);
+\fill[green,fill opacity=0.7] (2,4.5) circle(.3cm);
+\fill[green,fill opacity=0.7] (2.5,4.5) circle(.15cm);
+\fill[green,fill opacity=0.7] (2.7,4.5) circle(.075cm);
+\fill[green,fill opacity=0.7] (4.5,.2) circle(1cm);
+\fill[green,fill opacity=0.7] (.5,.5) circle(2cm);
+\fill[green,fill opacity=0.7] (2,2) circle(1cm);
+
+\fill[green,fill opacity=0.7] (1,4) circle(2cm);
+\fill[green,fill opacity=0.7] (2,4) circle(.8cm);
+\fill[green,fill opacity=0.7] (3.75,3.75) circle(2cm);
+
+
+\fill[green,fill opacity=0.7] (3,0) circle(1.2cm);
+
+
+\fill[green,fill opacity=0.7] (4,1) circle(2cm);
+
+\end{tikzpicture}
+\end{center}
+
+
+
+
+Now, the following theorem is deep water---it's much deeper than what you would normally see in a calculus textbook.  So unless you want to study math further, we won't expect you to learn \emph{why} it's true:
+
+\begin{theorem}
+For any open cover $\{O_i\}$ of the closed rectangle $X$ in the picture, there is a finite subset $O_1,\ldots, O_n$ that covers $X$.
+\end{theorem}
+
+
+Let's try to understand that statement first because it's not the most intuitive idea in math.  \hilight{We are not saying that $X$ can be covered by a finite number of open balls.}  That's actually pretty obvious and so it isn't interesting.  
+
+Think about the fact that you could imagine ways to use infinitely many balls to cover the rectangle.  They could get smaller and smaller.  There's no limit to how small they can be.  You can fill the rectangle with infinitely many super-tiny open balls. 
+
+Obviously, a computer can't print infinitely many circles, but we hope the image below gives you the idea.
+
+
+
+
+\begin{center}
+\begin{tikzpicture}
+
+\filldraw[blue!40!white, draw=black] (0,0) rectangle (5,5);
+
+
+
+\fill[green,fill opacity=0.7] (1,4) circle(.5cm);
+\fill[green,fill opacity=0.7] (2,4.5) circle(.3cm);
+\fill[green,fill opacity=0.7] (2.5,4.5) circle(.15cm);
+\fill[green,fill opacity=0.7] (2.7,4.5) circle(.075cm);
+\fill[green,fill opacity=0.7] (4.5,.2) circle(1cm);
+\fill[green,fill opacity=0.7] (.5,.5) circle(2cm);
+\fill[green,fill opacity=0.7] (2,2) circle(1cm);
+\fill[green,fill opacity=0.7] (3,3) circle(.5cm);
+\fill[green,fill opacity=0.7] (3.5,3.5) circle(.25cm);
+\fill[green,fill opacity=0.7] (3.75,3.75) circle(.12cm);
+\fill[green,fill opacity=0.7] (3.9,3.9) circle(.06cm);
+
+\end{tikzpicture}
+\end{center}
+
+The image above doesn't show an open cover.  You'd have to keep filling the page with more open balls to cover the rectangle.
+
+In theory, you could cook up some infinite set of open balls $\{O_i\}$ and you could try to make it so that you need \emph{all} of them to cover the rectangle.  You might think if you are very clever and if the open balls just keep getting smaller and smaller, then you will need all of them to cover $X$.
+
+But in fact you will not.  In fact, there will always be some finite number of them that cover the rectangle.  That's because the closed rectangle in the plane is \emph{compact}.
+
+\begin{definition}
+A set $X$  is \emph{compact} if for any open cover $\{O_i\}$ of $X$ there is a finite subset $\{O_1,\ldots, O_n\}$ that also covers $X$.  
+\end{definition}
+
+\hilight{And no amount of cleverness can make it so you \emph{have} to use all infinitely many of them.}  That is what compactness means.
+
+\begin{theorem}
+On the real line $\mathbb{R}$, every closed, bounded interval $[a,b]$ is compact.
+\end{theorem}
+
+\begin{theorem}
+In the plane, $\mathbb{R}^2$ every closed, bounded set (such as the rectangle in the images) is compact.
+\end{theorem}
+
+The proofs of these theorems are not trivial, and they are rightfully beyond the scope of a calculus class.  If you want to learn more, you should consider studying math further.  You will learn about all these topics and more in a first course in topology.  If you want to learn on your own, a much-loved textbook is Munkre's \textit{Topology}.  
+
+\subsection{Exercises}
+
+\begin{enumerate}
+
+\item
+It's a doomed exercise, but go ahead and try to come up with an open cover of the interval $[0,1]$ where you actually need infinitely many sets to cover the closed interval.
+
+You might attemt to make each interval half as long as the last one and try to arrange them all so that together they cover $[0,1]$.  We think it will be good for you to try this and see what difficulties arise.  
+
+
+
+
+\end{enumerate}
+
+
+
+
+
+
 
 
 \section{Exercises}
@@ -1334,9 +1472,6 @@ so $f'(c)=0$.
 The argument is the same when $f$ has a local minimum at $c$.  The only difference is that the inequalities are flipped.  
 
 \end{proof}
-
-
-
 
 \section{Indeterminate forms and L'H\^{o}pital's Rule}
 
