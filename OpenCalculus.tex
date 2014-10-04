@@ -3,14 +3,51 @@
 \usepackage[paperheight=9in,paperwidth=7in]{geometry}
 
 \usepackage{amsmath, amsthm}
+
+
 \usepackage{amssymb}
+\let\checkmark\undefined
 \usepackage{color}
 \usepackage{tikz}
+\usetikzlibrary{calc}
 \usepackage{pgfplots}
 \usetikzlibrary{arrows}
 \usepackage{hyperref}
 
 \usepackage{graphicx}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage{dingbat}
+\usepackage{manfnt}
+\newcounter{error}[chapter]
+\renewcommand*\theerror{\thechapter.\arabic{error}}
+\tikzset{
+errorsymbol/.style={%
+    rectangle,draw=blue,
+   ,scale=2,overlay}}
+
+\tikzset{
+ lampsymbol/.style={%
+   ,scale=2,overlay}}
+
+\newmdenv[hidealllines=true,backgroundcolor=blue!5,%
+ frametitle={\stepcounter{error}Common~Error~\theerror},
+ frametitlefont=\color{blue!80!black}\bfseries,
+ skipabove=\topsep,skipbelow=\topsep,nobreak,
+ leftmargin=.3cm,rightmargin=.3cm, innerleftmargin=2cm,
+ singleextra={\path let \p1=(P), \p2=(O) in ($(\x2,0)+0.5*(2,\y1)$) node[errorsymbol] {\textdbend};},%
+]{error}
+
+
+\newmdenv[nobreak,middlelinewidth=.8pt,
+ frametitlefont=\bfseries,
+ leftmargin=.3cm,rightmargin=.3cm, innerleftmargin=2cm,
+ skipabove=\topsep,skipbelow=\topsep,
+ singleextra={\path let \p1=(P), \p2=(O) in ($(\x2,0)+0.5*(2,\y1)$) node[ lampsymbol] {\leftpointright};
+\draw[line width=.8pt,white,] ($(O|-P)+(.2cm,0)$) -- ($(P)-(.2cm,0)$); 
+\draw[line width=.8pt,white,] ($(O)+(.2cm,0)$) -- ($(P|-O)-(.2cm,0)$);
+},%
+]{lamp}
+
 
 
 \hypersetup{
@@ -22,7 +59,95 @@
 }
 \definecolor{dandelion}{RGB}{240,255,48}
 
-\newcommand{\hilight}[1]{\colorbox{yellow}{#1}}
+
+\usepackage{soul}
+\usetikzlibrary{decorations.pathmorphing}
+\makeatletter
+\newcommand{\defhilighter}[3][]{%
+  \tikzset{every highlighter/.style={color=#2, fill opacity=#3, #1}}%
+}
+
+\defhilighter{yellow}{.5}
+
+\newcommand{\hilight@DoHighlight}{
+  \fill [ decoration = {random steps, amplitude=1pt, segment length=15pt}
+        , outer sep = -15pt, inner sep = 0pt, decorate
+        , every highlighter, this highlighter ]
+        ($(begin highlight)+(0,8pt)$) rectangle ($(end highlight)+(0,-3pt)$) ;
+}
+
+\newcommand{\hilight@BeginHighlight}{
+  \coordinate (begin highlight) at (0,0) ;
+}
+
+\newcommand{\hilight@EndHighlight}{
+  \coordinate (end highlight) at (0,0) ;
+}
+
+\newdimen\hilight@previous
+\newdimen\hilight@current
+
+\DeclareRobustCommand*\hilight[1][]{%
+  \tikzset{this highlighter/.style={#1}}%
+  \SOUL@setup
+  %
+  \def\SOUL@preamble{%
+    \begin{tikzpicture}[overlay, remember picture]
+      \hilight@BeginHighlight
+      \hilight@EndHighlight
+    \end{tikzpicture}%
+  }%
+  %
+  \def\SOUL@postamble{%
+    \begin{tikzpicture}[overlay, remember picture]
+      \hilight@EndHighlight
+      \hilight@DoHighlight
+    \end{tikzpicture}%
+  }%
+  %
+  \def\SOUL@everyhyphen{%
+    \discretionary{%
+      \SOUL@setkern\SOUL@hyphkern
+      \SOUL@sethyphenchar
+      \tikz[overlay, remember picture] \hilight@EndHighlight ;%
+    }{%
+    }{%
+      \SOUL@setkern\SOUL@charkern
+    }%
+  }%
+  %
+  \def\SOUL@everyexhyphen##1{%
+    \SOUL@setkern\SOUL@hyphkern
+    \hbox{##1}%
+    \discretionary{%
+      \tikz[overlay, remember picture] \hilight@EndHighlight ;%
+    }{%
+    }{%
+      \SOUL@setkern\SOUL@charkern
+    }%
+  }%
+  %
+  \def\SOUL@everysyllable{%
+    \begin{tikzpicture}[overlay, remember picture]
+      \path let \p0 = (begin highlight), \p1 = (0,0) in \pgfextra
+        \global\hilight@previous=\y0
+        \global\hilight@current =\y1
+      \endpgfextra (0,0) ;
+      \ifdim\hilight@current < \hilight@previous
+        \hilight@DoHighlight
+        \hilight@BeginHighlight
+      \fi
+    \end{tikzpicture}%
+    \the\SOUL@syllable
+    \tikz[overlay, remember picture] \hilight@EndHighlight ;%
+  }%
+  \SOUL@
+}
+\makeatother
+
+
+
+
 \usepackage[english]{babel}
 
 \addto\captionsenglish{
@@ -143,6 +268,19 @@ We always welcome contributions from the mathematics community to help improve t
 
 \pagenumbering{arabic}
 
+\chapter*{Preface}
+
+\section{Using This Text}
+
+
+We have used the following style of colored box to indicate a cautionary statement about common errors the authors have seen students make.  
+
+\begin{error}
+The icon to the left represents a ``dangerous bend'' in the road---a place where the reader should exercise caution.
+\end{error}
+
+
+
 \part{A Part Heading}                   % Print a "part" heading
 
 
@@ -156,7 +294,7 @@ We always welcome contributions from the mathematics community to help improve t
 
 Everything in calculus is a limit, and a thorough understanding of limits is possibly the most challenging aspect of a first course in calculus.  But it is well worth your trouble to learn it, because later when you want to understand derivatives and integrals, well, those things are limits too.  
 
-The basic idea of limits is simple.  If you have some function $f$, you ask yourself what value $f(x)$ is approaching as $x$ gets closer and closer to some number $a$.  The notation we use for that is $$\lim_{x\to a} f(x)$$.  You should learn that notation and learn how to say it out loud.  It is read ``the limit of f of x as x approaches a''.  Or you could also say ``as x goes to a''.  
+The basic idea of limits is simple.  If you have some function $f$, you ask yourself what value $f(x)$ is approaching as $x$ gets closer and closer to some number $a$.  The notation we use for that is $$\lim_{x\to a} f(x).$$  You should learn that notation and learn how to say it out loud.  It is read ``the limit of f of x as x approaches a''.  Or you could also say ``as x goes to a''.  
 
 Spoiler alert: when $f$ is \emph{continuous}, then $$\lim_{x\to a} f(x)$$ is just $f(a)$.  Think about that for a moment and convince yourself that it's not at all surprising.  Imagine $f(x)=x^2$.  Ask yourself what value $f(x)$ is approaching as $x$ goes to $2$.  Obviously, $f(x)$ is going to 4.
 
@@ -1200,6 +1338,74 @@ The argument is the same when $f$ has a local minimum at $c$.  The only differen
 
 
 
+\section{Indeterminate forms and L'H\^{o}pital's Rule}
+
+How can we evaluate limits like 
+$$\lim_{x\to \infty} \frac{e^x}{x^2}?$$
+The difficulty here is that both numerator and denominator are going to $infinity$, and $\infty/\infty$ tells us nothing.  In general, a limit of that form could $infinity$ or 0 or any finite number, and so far we haven't developed any tools for dealing with that.  
+
+
+Enter L'H\^{o}pital's Rule.  It's a theorem that allows us to evaluate these limits by taking derivatives, and we use it \emph{all the time}.  
+
+\subsection{Indeterminate Forms}
+
+Let's back up and make sure we understand indeterminate forms.  For shorthand, we often write $\frac{\infty}{\infty}$, but keep in mind that what we really mean is we have some functions $f$ and $g$ and we're taking a limit $\lim_{x\to a}\frac{f(x)}{g(x)}$ where both $f$ and $g$ go to infinity.
+
+Infinity isn't a number, so it doesn't actually make any sense to do division.  We can only make sense of $\frac{\infty}{\infty}$ in terms of limits in a particular situation.
+
+Another indeterminate form is $\frac{0}{0}$.  This one means we have some limit  $\lim_{x\to a}\frac{f(x)}{g(x)}$ where $f$ and $g$ both go to 0.  An example is $$\lim_{x\to 0}\frac{\sin(x)}{x}.$$
+
+A third indeterminate form is $0\cdot \infty$.  An example is 
+$$\lim_{x\to 0}e^{1/x^2}\sin(x).$$
+
+
+\begin{error}
+The forms $\frac{\infty}{0}$ and $\frac{0}{\infty}$ are \emph{not} indeterminate.  For example, if $f\to 0$ and $g\to \infty$ then $\frac{f}{g}\to 0$ unambiguously.  The two functions don't compete.  Both $f$ going to 0 and $g$ going to $\infty$ tend to make the ratio small.
+\end{error}
+
+\subsection{L'H\^{o}pital's Rule}
+
+
+\begin{theorem}
+If $f$ and $g$ are both differentiable and if $\lim_{x\to a} \frac{f(x)}{g(x)}$ has one of the indeterminate forms $\frac{\infty}{\infty}$ or $\frac{0}{0}$ then 
+$$\lim_{x\to a} \frac{f(x)}{g(x)} = \lim_{x\to a} \frac{f'(x)}{g'(x)}.$$
+Here $a$ may be any number or $\pm\infty$.
+\end{theorem}
+
+\section{Proof of L'H\^{o}pital's Rule}
+
+We're actually not going to \emph{prove} L'H\^{o}pital's rule in full generality and completely precisely.  What we will do is think about the main ideas of the proof.  Your main goal as you read this is to \hilight{understand how the Mean Value Theorem shows up in this argument}.
+
+We also choose to write in the style below, using the notion of ``$\approx$'', or ``approximately equals'' rather than the more precise $\epsilon$-$\delta$ approach, because (1) working mathematicians often think like this and (2) we think it may actually make more sense to a beginning students than the $\epsilon$-$\delta$ approach.
+
+\subsection{Proof sketch, the $\frac{\infty}{\infty}$ case}
+
+Assume both limits $\lim_{x\to \infty}f'(x)$ and $\lim_{x\to \infty}g'(x)$ exist.  For shorthand, let's call them $f'(\infty)$ and $g'(\infty)$.  Then there exists $M$ so that whenever $x>M$ it follows that $g'(x)$ is close to $g'(\infty)$ and $f'(x)$ is close to $g'(\infty)$.
+
+Now consider any interval $[a,b_n]$ where $M<a$ and  $b_n=n$, any integer bigger than $n$.    
+
+
+Note that 
+$$\frac{f(b_n)-f(a)}{g(b_n)-b(a)} = 
+\frac{\frac{f(b_n)-f(a)}{b_n-a}}{\frac{g(b_n)-g(a)}{b_n-a}}$$
+and by the Mean Value Theorem there are points $x^*_n$ and $z^*_n$ in $(a,b_n)$ where $$\frac{f(b_n)-f(a)}{b_n-a}=f'(x^*_n)$$
+and 
+$$\frac{g(b_n)-g(a)}{b_n-a}=g'(z^*_n).$$
+Then, since $M<x^*_n,z^*_n$, we know that 
+$$\frac{f(b_n)-f(a)}{b_n-a}\approx f'(\infty)$$
+and 
+$$\frac{g(b_n)-g(a)}{b_n-a}\approx g'(\infty)$$
+so 
+\begin{equation}\label{4907208720394}\frac{f(b_n)-f(a)}{g(b_n)-b(a)} \approx \frac{f'(\infty)}{g'(\infty)}.\end{equation}
+
+Now, the approximate equality (\ref{4907208720394}) holds no matter what $n$ is.  As $n\to \infty$ gets bigger, $f(b_n)\to \infty$ and $g(b_n)\to\infty$.  But $f(a)$ and $g(a)$ stay the same.
+
+We claim that $$\lim_{n\to \infty}\frac{f(b_n)-f(a)}{g(b_n)-b(a)} = \lim_{n\to \infty}\frac{f(b_n)}{g(b_n)}.$$
+The essential point of this idea is that as $f(b_n)$ gets bigger and bigger, subtracting $f(a)$ makes less and less difference.  Think about what happens to $\frac{x-5}{x+30}$ as $x\to \infty$.  In the long run, the -5 and the +30 are irrelevant, right?  The limit is just 1. 
+
+Therefore, $$ \lim_{n\to \infty}\frac{f(b_n)}{g(b_n)} \approx \frac{f'(\infty)}{g'(\infty)}.$$  
+Since we can make this approximation as close as we want by choosing $M$ big enough, 
+$$ \lim_{n\to \infty}\frac{f(b_n)}{g(b_n)} = \frac{f'(\infty)}{g'(\infty)}.$$
 
 
 
