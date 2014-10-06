@@ -1047,6 +1047,14 @@ $$\lim_{h\to 0^-}\frac{|h|}{h}=\lim_{h\to 0+}\frac{-h}{h}=-1.$$
 
 Since the left and right limits are not equal, the limit does not exist, so the derivative does not exist at 0.  
 
+
+\begin{error}
+When presented with this argument, students often get confused about whether $\lim_{x\to 0} |x|$ exists.  In fact, it does.  The function $f(x)=|x|$ is continuous everywhere.  When talking about the derivative at 0, we take the limit of $\frac{f(h)-f(0)}{h}$.  It's \emph{this} limit that doesn't exist.  
+
+\end{error}
+
+
+
 This argument is completely sufficient, but let's also think about secant lines.  If $h$ is any positive number, then the secant line through the points $(0,0)$ and $(h,|h|)$ is always $y=x$.  That's true no matter how small $h$ is, so long as it is positive. 
 
 
@@ -1150,11 +1158,14 @@ Contrast with the function $f(x)=x^2\sin(1/x)$ which \emph{is} differentiable at
 \section{The Product Rule}
 
 \begin{prop}
-If $f$ and $g$ are differentiable at $a$ then 
-$$\frac{d}{dx}[f(x)g(x)]=f'(a)g(a)+f(a)g'(a)$$
+If $f$ and $g$ are differentiable at $x$ then 
+$$\frac{d}{dx}[f(x)g(x)]=f'(x)g(x)+f(x)g'(x).$$
 
 \end{prop}
 
+\begin{error}
+Students often want the derivative of $f(x)g(x)$ to be $f'(x)g'(x)$.  That would be easy, but it just isn't true.    
+\end{error}
 
 
 \begin{center}
@@ -1196,7 +1207,7 @@ $$\frac{d}{dx}[f(x)g(x)]=f'(a)g(a)+f(a)g'(a)$$
 We present a visual argument that isn't completely general.  My students have found it illuminating. 
 
 By definition, the derivative of $f(x)g(x)$ at $a$ is
-$$\lim_{h\to 0}\frac{f(a+h)g(a+h)-f(a)g(a)}{h}$$
+$$\lim_{h\to 0}\frac{f(a+h)g(a+h)-f(a)g(a)}{h}.$$
 Let's assume for the moment that the numbers are all positive so we can illustrate them with rectangles as in the figure.
 
 Observe that $f(a+h)g(a+h)$ is the combined area of the four rectangles A, B, C and D while $f(a)g(a)$ is the area of just rectangle A.  Therefore, $f(a+h)g(a+h)-f(a)g(a)$ is the area of B + C + D.  
@@ -1229,6 +1240,14 @@ Compute the derivative $\frac{d}{dx}\sin(x^2)$.
 The outside function in this composition is $f(x)=\sin(x)$.  The inside function is $g(x)=x^2$.  Thus $\frac{d}{dx}\sin(x^2) = f'(g(x))g'(x)= \cos(x^2)(2x)$.
 
 \end{example}
+
+\begin{error}
+Students often get confused in applying the chain rule.  You have to keep in mind that what goes inside $f'$ is $g(x)$, not $g'(x)$.  A common error is to say the derivative is $f'(g'(x))$, but you should be careful.  That's not what the chain rule says.
+\end{error}
+
+
+
+
 
 The following proof sketch is intended to be illuminating rather than exactly precise.  An exactly precise proof would be written with $\epsilon$s and $\delta$s, but we think the student is more likely to undestand the idea presented this way.
 
@@ -1506,6 +1525,11 @@ If $f$ and $g$ are both differentiable and if $\lim_{x\to a} \frac{f(x)}{g(x)}$ 
 $$\lim_{x\to a} \frac{f(x)}{g(x)} = \lim_{x\to a} \frac{f'(x)}{g'(x)}.$$
 Here $a$ may be any number or $\pm\infty$.
 \end{theorem}
+
+\begin{error}
+You \emph{have} to verify that $\lim_{x\to a} \frac{f(x)}{g(x)}$ has an indeterminate form $\frac{\infty}{\infty}$ or $\frac{0}{0}$ before you can apply L'H\^{o}pital's Rule.  If you don't, you may get false results.  
+\end{error}
+
 
 \subsection{Proof of L'H\^{o}pital's Rule}
 
