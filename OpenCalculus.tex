@@ -2,7 +2,7 @@
 
 \usepackage[paperheight=9in,paperwidth=7in]{geometry}
 
-\usepackage{amsmath, amsthm}
+\usepackage{amsmath, amsthm, textcomp}
 
 
 \usepackage{amssymb}
@@ -12,6 +12,7 @@
 \usetikzlibrary{calc}
 \usepackage{pgfplots}
 \usetikzlibrary{arrows}
+\usepgfplotslibrary{fillbetween}
 \usepackage{hyperref}
 
 \usepackage{graphicx}
@@ -19,7 +20,14 @@
 \usepackage{dingbat}
 \usepackage{manfnt}
 \newcounter{error}[chapter]
+\newcounter{tiein}[chapter]
+\newcounter{theoremct}[chapter]
+
 \renewcommand*\theerror{\thechapter.\arabic{error}}
+\renewcommand*\thetiein{\thechapter.\arabic{tiein}}
+\renewcommand*\thetheoremct{\thechapter.\arabic{theoremct}}
+
+
 \tikzset{
 errorsymbol/.style={%
     rectangle,draw=blue,
@@ -38,15 +46,30 @@ errorsymbol/.style={%
 ]{error}
 
 
-\newmdenv[nobreak,middlelinewidth=.8pt,
- frametitlefont=\bfseries,
+
+
+\newmdenv[hidealllines=true,backgroundcolor=yellow!5,%
+frametitle={\stepcounter{error}Tying~It~Together~\theerror},
+ frametitlefont=\color{blue!80!black}\bfseries,
+ skipabove=\topsep,skipbelow=\topsep,nobreak,
  leftmargin=.3cm,rightmargin=.3cm, innerleftmargin=2cm,
- skipabove=\topsep,skipbelow=\topsep,
- singleextra={\path let \p1=(P), \p2=(O) in ($(\x2,0)+0.5*(2,\y1)$) node[ lampsymbol] {\leftpointright};
-\draw[line width=.8pt,white,] ($(O|-P)+(.2cm,0)$) -- ($(P)-(.2cm,0)$); 
-\draw[line width=.8pt,white,] ($(O)+(.2cm,0)$) -- ($(P|-O)-(.2cm,0)$);
-},%
-]{lamp}
+ singleextra={\path let \p1=(P), \p2=(O) in ($(\x2,0)+0.5*(2,\y1)$) node[errorsymbol] {\textmarried};},%
+]{tiein}
+
+
+
+\newmdenv[hidealllines=true,backgroundcolor=blue!5,%
+ frametitle={\stepcounter{theoremct}Theorem~\thetheoremct},
+ frametitlefont=\color{blue!80!black}\bfseries,
+ skipabove=\topsep,skipbelow=\topsep,nobreak,
+ leftmargin=.3cm,rightmargin=.3cm,%
+]{theorem}
+
+
+
+
+
+
 
 
 
@@ -160,7 +183,7 @@ errorsymbol/.style={%
 \newcommand{\highlight}[1]{%
   \colorbox{yellow!50}{$\displaystyle#1$}}
 
-\newtheorem{theorem}{Theorem}
+%\newtheorem{theorem}{Theorem}
 \newtheorem{prop}{Proposition}
 
 
@@ -1177,7 +1200,7 @@ Students often want the derivative of $f(x)g(x)$ to be $f'(x)g'(x)$.  That would
 
 \filldraw[cyan!40!green, draw=black] (0,4) rectangle (4,5);
 
-\filldraw[blue!40!green, draw=black] (4,4) rectangle (5,5);
+\filldraw[yellow, draw=black] (4,4) rectangle (5,5);
 
 \draw [decorate,decoration={brace,amplitude=10pt}] (-.2,0) -- (-.2,4);
 
@@ -1279,6 +1302,8 @@ It only matters that those two numbers are the \emph{same} and that they are goi
 Thus $\frac{d}{dx}f(g(x)) = f'(g(x))g'(x)$.
 \end{proof}
 
+
+
 \section{Practice Quiz}
 
 For the best learning experience, treat a practice quiz like an in-class quiz. Don't refer to other parts of the textbook.
@@ -1347,6 +1372,41 @@ Compute the derivative $\frac{d}{dx} \sin^{-1}(x)$ using the chain rule/implicit
 
 
 \end{enumerate}
+
+
+
+
+\section{Mean Value Theorem}
+
+The mean value theorem is one of the most important theorems of calculus, but we're going to see that it's super-easy to prove once we have the Extreme Value Theorem.  
+
+
+\begin{theorem}
+Assume $f$ is continuous on $[a,b]$ and differentiable on $(a,b)$.  Then there exists a point $c^*\in (a,b)$ where $f'(c^*)=\frac{f(b)-f(a)}{b-a}$.
+\end{theorem}
+
+Here's how to understand that that means.  The fraction $\frac{f(b)-f(a)}{b-a}$ is the average rate of change of $f$.  For example, if you drive for an hour and then you find that you have traveled 70 miles, then you have travelled on average 70 miles per hour.  
+
+The Mean Value Theorem says that at some point you must actually have been driving at 70 miles per hour. 
+
+Be sure to stop a minute and think about that if you don't understand the difference between an average of 70 miles per hour and driving at 70 miles per hour.  The latter is the number it says on your spedometer.  It's your \emph{instantaneous} speed, not an average.  
+
+If your speed was always less than 70 miles per hour, then there is no way you could have traveled 70 miles in one hour.  That's clear, right?  
+
+And if your speed was always greater than 70 miles per hour, you certainly would have travelled farther than 70 miles in one hour.  
+
+
+\begin{tiein}
+It would be a good idea to review the Extreme Value Theorem for this section.  Recall that it's a very deep theorem for calculus, one of the main theorems holding calculus up.
+\end{tiein}
+
+
+\begin{proof}[Proof of the Mean Value Theorem]
+
+
+\end{proof}
+
+
 
 
 
@@ -1566,10 +1626,179 @@ Therefore, $$ \lim_{n\to \infty}\frac{f(b_n)}{g(b_n)} \approx \frac{f'(\infty)}{
 Since we can make this approximation as close as we want by choosing $M$ big enough, 
 $$ \lim_{n\to \infty}\frac{f(b_n)}{g(b_n)} = \frac{f'(\infty)}{g'(\infty)}.$$
 
+That ends our proof sketch.
 
 
+
+\begin{tiein}
+When presented with the Mean Value Theorem, students may wonder how we use it or why it's important.  Student's have asked me to give an example where we \emph{use} it to solve a problem.  Since we use the Mean Value Theorem to prove L'H\^{o}pital's Rule, every time we use L'H\^{o}pital's Rule, we have used the MVT.  
+\end{tiein}
 
 \chapter{Integrals}
+
+\section{The Fundamental Theorem of Calculus}
+
+In this section we will examine how differentiation and integration are related.  At the same time, we will develop a very useful tool for evaluating integrals.
+
+So, what is $$\frac{d}{dx}\int_a^x f(u) du?$$
+Let's make sure we understand the question.  First of all, we will assume $f$ is a continuous function.  Then we can define a new function $\varphi(x)$ by 
+$$\varphi(x)=\int_a^x f(u) du.$$
+
+Students are sometimes confused because we introduce the $u$ variable here.  It's because we can't write $\int_a^x f(x) dx$.  We don't do that because $x$ is overloaded.  It would mean the integral of $f(x)$ from $x=a$ to $x=x$ which doesn't make good sense.  When you take some integral $\int_a^b f(u) du$, it doesn't depend on what $u$ is.  Here $u$ is just what we call a ``dummy variable'', so we choose a letter we haven't already used.  But the integral does depend on $f$ and $a$ and $b$.  If you change $b$, you get a different number.  
+
+So if we choose to think of $a$ as a fixed number but think of $x$ as a variable that can change, then $\int_a^x f(u) du$ is a function that depends on $x$.  It's the area under $f$ between $a$ and $x$.
+
+Now, back to the question: what is $$\frac{d}{dx}\int_a^x f(u) du?$$
+Since we haven't yet developed any tools for dealing with derivatives of integrals, we have no choice but to use what?  
+
+
+
+\begin{center}
+\begin{tikzpicture}
+
+
+\begin{axis}[samples=100,
+scale=1,
+axis x line=center,
+y=1in,
+x=1in,
+axis y line=none,
+xmin=-1,
+xmax=2,
+xtick={0.3,1.8,1.9 },
+xticklabels={$a$, $x$,},
+ymin=-1,
+ytick={},
+ymax=1.5,restrict y to domain =-1:2]
+\addplot[ultra thick,blue,domain=-.5:2, name path = f]plot (\x, {sin(\x r)});
+
+    \path[name path=axis] (axis cs:.3,0) -- (axis cs:2,0);
+
+    \addplot [
+        thick,
+        color=blue,
+        fill=blue, 
+        fill opacity=0.15
+    ]
+    fill between[
+        of=f and axis,
+        soft clip={domain=.3:1.8},
+    ];
+
+   \end{axis}
+
+
+\node[scale=2,color=blue] at (3,4.5) {${ \Large f}$};
+
+
+\end{tikzpicture}
+\end{center}
+
+We have no choice but to use the \emph{definition} of the derivative.  So we consider
+$$\frac{1}{h}\left(\int_a^{x+h} f(u) du - \int_a^x f(u) du\right).$$
+Make sure you see how this is just the usual difference quotient.
+
+The notation $\delta$ is often used to mean ``change in'', and it is convenient to use that here.  We can think of the difference quotient as $\frac{\Delta \varphi}{\Delta x}$---change in $\varphi$ over change in $x$.  That is, 
+
+$$\Delta \varphi = \int_a^{x+h} f(u) du - \int_a^x f(u) du.$$
+
+We can see that $\int_a^{x+h} f(u) du$ is the area from $a$ to $x+h$ and $\int_a^{x} f(u) du$ is the area from $a$ to $x$, so if you subtract them, you get that $\Delta \varphi$ is just the area of the little sliver between $x$ and $x+h$.
+
+In the following image, we have exaggerated that area.  If you are viewing this in color, $\Delta \varphi$ is the area under the curve shaded in pink.
+
+
+\begin{center}
+\begin{tikzpicture}
+
+
+\begin{axis}[samples=100,
+scale=1,
+axis x line=center,
+y=5in,
+x=5in,
+axis y line=none,
+xmin=1.5,
+xmax=2,
+xtick={1.8,1.9 },
+xticklabels={$x$,$x+h$},
+ymin=0,
+ytick={},
+ymax=.3,restrict y to domain =0:.3]
+\addplot[ultra thick,blue,domain=-.5:2, name path = f]plot (\x, {sin(\x r)-.8});
+
+    \path[name path=axis] (axis cs:1.5,0) -- (axis cs:2,0);
+    
+    \path[name path=top] (axis cs:1.8,.17) -- (axis cs:2,.17);
+
+    \addplot [
+        thick,
+        color=blue,
+        fill=blue, 
+        fill opacity=0.15
+    ]
+    fill between[
+        of=f and axis,
+        soft clip={domain=1.5:1.8},
+    ];
+
+    \addplot [
+        thick,
+        color=purple,
+        fill=green, 
+        fill opacity=0.35
+    ]
+    fill between[
+        of=top and f,
+        soft clip={domain=1.8:1.9},
+    ];
+    
+        \addplot [
+        thick,
+        color=blue,
+        fill=red, 
+        fill opacity=0.15
+    ]
+    fill between[
+        of=axis and f,
+        soft clip={domain=1.8:1.9},
+    ];
+    
+    
+    
+\end{axis}
+
+\draw [decorate,decoration={brace,amplitude=10pt},yshift=0pt]
+(1.4in,0) -- (1.4in,.85in)  node [black,midway,xshift=-0.8cm] {\footnotesize
+$f(x)$};
+
+
+\node[scale=1,color=black] at (1.75in,.5in) {$\Delta \varphi$};
+
+\draw[<-] (1.9in,.83in) -- (2.4in,1.4in) node[yshift=.1in] {$f(x)h-\Delta \varphi$};
+
+
+\node[scale=2,color=blue] at (1in,1.5in) {$f$};
+
+
+\end{tikzpicture}
+\end{center}
+
+In general, the area $\Delta \varphi$ is not easy to compute, but if $h$ is small, then 
+$$\Delta \varphi \approx f(x)\cdot h.$$
+Stare at the figure above if that isn't obvious.  The number on the right, $f(x)\cdot h$ is the area of a rectangle with width $h$ and height $f(x)$. The value of $\Delta \varphi$ differs from the area of that rectangle only by the tiny area above the curve.
+
+As $h\to 0$, the difference $\Delta \varphi - f(x)\cdot h$ also goes to zero.  That's the part where we use the continuity of $f$.  
+
+Since the difference quotient is $\frac{\Delta \varphi}{h}$, if we use this approximation, then for $h$ small we have 
+$$\frac{\Delta \varphi}{h}\approx f(x).$$
+In the limit, it becomes exact: $$\lim_{h\to 0}\frac{\varphi(x+h)-\varphi(x)}{h}=f(x).$$
+
+\begin{theorem} Assume $f$ is defined and integrable on a set containing $[a,x]$ in its interior and $f$ is continuous at $x$.  Then
+$$\frac{d}{dx}\int_a^x f(u)du = f(x)$$
+\end{theorem}
+
+
+The assumtion about $f$ being ``integrable'' is required to assure that $f$ is nice enough. If $f$ is continuous everywhere, then the Fundamental Theorem certainly holds, but you have to take special care if $f$ has discontinuities.  
 
 
 \chapter*{GNU Free Documentation License}
