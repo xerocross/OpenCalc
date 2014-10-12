@@ -66,6 +66,12 @@ frametitle={\stepcounter{error}Tying~It~Together~\theerror},
 ]{theorem}
 
 
+\newmdenv[hidealllines=true,backgroundcolor=yellow!5,%
+ frametitle={\stepcounter{theoremct}Special Example~\thetheoremct},
+ frametitlefont=\color{blue!80!black}\bfseries,
+ skipabove=\topsep,skipbelow=\topsep,nobreak,
+ leftmargin=.3cm,rightmargin=.3cm,%
+]{specialexample}
 
 
 
@@ -302,6 +308,56 @@ We have used the following style of colored box to indicate a cautionary stateme
 The icon to the left represents a ``dangerous bend'' in the road---a place where the reader should exercise caution.
 \end{error}
 
+
+\section*{Learning Calculus}
+
+A lot can be said about how best to learn, and we certainly won't be exhaustive here, but we will offer some tips based on experience in education.  
+
+
+\subsection*{Special Examples}
+
+A large part of the difference between A students and C students is that the A students tend to have a catalogue of special examples in mind ready to go on tests.  These are not examples of routine computations to be learned but rather exceptional examples worth remembering because they illustrate something that usually doesn't happen in most of the examples we consider.  
+
+In the text, we will indicate special examples with a box like the one below.    
+
+\begin{specialexample}
+A continuous function on an interval $[a,b]$ where $f$ attains a global minimum at a point $c$ in the interior $(a,b)$ and $f'(c)$ is non-zero.
+
+
+\begin{center}
+\begin{tikzpicture}
+
+\begin{axis}[samples=100,
+scale=1,
+axis x line=center,
+y=1in,
+x=1in,
+axis y line=none,
+xmin=-1.5,
+xmax=1.5,
+xtick={-1,1},
+xticklabels={$-1$, $1$,},
+ymin=-.2,
+ytick={},
+ymax=1.5,restrict y to domain =-1.5:1.5]
+
+\addplot[ultra thick,blue,domain=-1:1, name path = f]plot (\x, {abs(\x)});
+
+      \end{axis}
+
+\node[scale=2,color=blue] at (1.5in,1.5in) {${ f(x)=|x|}$ on $[-1,1]$};
+
+\end{tikzpicture}
+\end{center}
+
+This can only happen if $f'(c)$ does not exist.  Note that we insisted that $c$ is an interior point, so it could not have been an end point of the interval.
+
+\end{specialexample}
+
+
+It would be a good idea to commit these special examples to memory, perhaps using flash cards.  
+
+ 
 
 
 \part{A Part Heading}                   % Print a "part" heading
